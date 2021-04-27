@@ -2,6 +2,9 @@
 
 {{#each this.currentMovies}}
     <h3>Title: <a href="/movies/{{this.id}}">{{this.title}}</a></h3>
+    <form action="/movies/{{this.id}}/delete" method="post">
+            <button type="submit" class="submit-btn">Delete ❌ </button>
+    </form>
     <hr>
 {{/each}}
 

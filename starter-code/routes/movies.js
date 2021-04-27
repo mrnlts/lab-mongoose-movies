@@ -4,7 +4,7 @@ const Movie = require('../models/Movie.model.js');
 
 const router = express.Router();
 
-/* List all celebrities */
+/* List all movies */
 
 router.get('/movies', (req, res, next) => {
     console.log('Movies page');
@@ -17,7 +17,7 @@ router.get('/movies', (req, res, next) => {
 })
 
 
-/* Create new celebrity */
+/* Create new movie */
 
 router.get('/movies/new', (req, res, next) => {
     console.log('Enter new movie');
@@ -49,5 +49,19 @@ router.get('/movies/:id', (req, res, next) => {
         })
 })
 
+
+/* Delete movie */
+
+router.post('/movies/:id/delete', (req, res, next) => {
+    const {id} = req.params;
+    Movie.findByIdAndRemove({'_id': id})
+        .then(()=> {
+            res.redirect('/movies');
+        })
+        .catch(err => {
+            console.log('Error deleting movie: ', err);
+            next(err);
+        })
+})
 
 module.exports = router;
