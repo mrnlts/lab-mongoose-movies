@@ -8,7 +8,8 @@ const celebritySchema = new Schema({
     catchPhrase: {
         type: String,
         required: true
-    }
+    },
+    movies: [String]
 });
 
 const Celebrity = model('Celebrity', celebritySchema);
