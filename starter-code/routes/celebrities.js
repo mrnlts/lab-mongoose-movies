@@ -16,16 +16,37 @@ router.get('/celebrities', (req, res, next) => {
         })
 })
 
+/* Create new celebrity */
+
+router.get('/celebrities/new', (req, res, next) => {
+    console.log('Enter new celebrity');
+    res.render('celebrities/new');
+})
+
+router.post('/celebrities', (req, res, next) => {
+    const { name, occupation, catchPhrase } = req.body;
+    Celebrity.create({name, occupation, catchPhrase})
+        .then((newCeleb) => {
+            newCeleb.save();
+            res.redirect('/celebrities');
+        })
+        .catch((err) => {
+            console.log('Error adding new celebrity to DB: ', err);
+            res.render('celebrities/new');
+        })
+})
+
 /* Show celebrity's details */
 
 router.get('/celebrities/:id', (req, res, next) => {
     const {id} = req.params;
     Celebrity.findOne({'_id': id})
-        .then((celebFromDB)=> res.render('celebrities/show', celebFromDB))
+        .then((celebFromDB)=> res.render('celebrities/show', {celebFromDB}))
         .catch(err => {
             console.log('Error displaying details of celebrity: ', err);
             next(err);
         })
 })
+
 
 module.exports = router;
