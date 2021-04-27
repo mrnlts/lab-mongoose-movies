@@ -36,6 +36,41 @@ router.post('/celebrities', (req, res, next) => {
         })
 })
 
+/* Show celebrity's details */
+
+router.get('/celebrities/:id', (req, res, next) => {
+    const {id} = req.params;
+    Celebrity.findOne({'_id': id})
+        .then((celebFromDB)=> res.render('celebrities/show', {celebFromDB}))
+        .catch(err => {
+            console.log('Error displaying details of celebrity: ', err);
+            next(err);
+        })
+})
+
+/* Edit celebrity's details */
+
+router.get('/celebrities/:id/edit', (req, res, next) => {
+    const {id} = req.params;
+    Celebrity.findOne({'_id': id})
+        .then((celebFromDB)=> res.render('celebrities/edit', {celebFromDB}))
+        .catch(err => {
+            console.log('Error displaying opening edit page: ', err);
+            next(err);
+        })
+})
+
+router.post('/celebrities/:id', (req, res, next) => {
+    const {id} = req.params;
+    const {name, occupation, catchPhrase} = req.body;
+    Celebrity.findByIdAndUpdate({'_id': id}, {'name':name, 'occupation':occupation, 'catchPhrase': catchPhrase})
+        .then(()=> res.redirect('/celebrities'))
+        .catch(err => {
+            console.log('Error displaying updating celebrity: ', err);
+            next(err);
+        })
+})
+
 /* Delete celebrity */
 
 router.post('/celebrities/:id/delete', (req, res, next) => {
@@ -46,18 +81,6 @@ router.post('/celebrities/:id/delete', (req, res, next) => {
         })
         .catch(err => {
             console.log('Error deleting celebrity: ', err);
-            next(err);
-        })
-})
-
-/* Show celebrity's details */
-
-router.get('/celebrities/:id', (req, res, next) => {
-    const {id} = req.params;
-    Celebrity.findOne({'_id': id})
-        .then((celebFromDB)=> res.render('celebrities/show', {celebFromDB}))
-        .catch(err => {
-            console.log('Error displaying details of celebrity: ', err);
             next(err);
         })
 })

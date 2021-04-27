@@ -2,9 +2,13 @@
 
 {{#each celebs}}
     <h3>Name: <a href="/celebrities/{{this.id}}">{{this.name}}</a></h3>
-    <form action="/celebrities/{{this.id}}/delete" method="post">
-        <button type="submit" class="submit-btn">Delete ❌ </button>
-    </form>
+    <div style="display: flex">
+        <form action="/celebrities/{{this.id}}/delete" method="post">
+            <button type="submit" class="submit-btn">Delete ❌ </button>
+        </form>
+        <button type="submit" class="submit-btn"><a style="text-decoration: none; color: black" href="/celebrities/{{this.id}}/edit"> Edit ♻️ </a></button>
+    </div>
+    <hr>
 {{/each}}
 
 <br>
