@@ -1,6 +1,6 @@
 <h2>🎬 Movies 🎬</h2>
 
 {{#each this.currentMovies}}
-    <h3>Title: {{this.title}}</h3>
+    <h3>Title: <a href="/movies/{{this.id}}">{{this.title}}</a></h3>
     <hr>
 {{/each}}
