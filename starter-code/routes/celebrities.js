@@ -55,7 +55,7 @@ router.get('/celebrities/:id/edit', (req, res, next) => {
     Celebrity.findOne({'_id': id})
         .then((celebFromDB)=> res.render('celebrities/edit', {celebFromDB}))
         .catch(err => {
-            console.log('Error displaying opening edit page: ', err);
+            console.log('Error opening edit page: ', err);
             next(err);
         })
 })
@@ -66,7 +66,7 @@ router.post('/celebrities/:id', (req, res, next) => {
     Celebrity.findByIdAndUpdate({'_id': id}, {'name':name, 'occupation':occupation, 'catchPhrase': catchPhrase})
         .then(()=> res.redirect('/celebrities'))
         .catch(err => {
-            console.log('Error displaying updating celebrity: ', err);
+            console.log('Error updating celebrity: ', err);
             next(err);
         })
 })

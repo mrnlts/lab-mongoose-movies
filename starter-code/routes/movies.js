@@ -49,6 +49,29 @@ router.get('/movies/:id', (req, res, next) => {
         })
 })
 
+/* Edit movie's details */
+
+router.get('/movies/:id/edit', (req, res, next) => {
+    const {id} = req.params;
+    Movie.findOne({'_id': id})
+        .then((movieFromDB)=> res.render('movies/edit', {movieFromDB}))
+        .catch(err => {
+            console.log('Error displaying opening edit page: ', err);
+            next(err);
+        })
+})
+
+router.post('/movies/:id', (req, res, next) => {
+    const {id} = req.params;
+    const {title, genre, plot} = req.body;
+    Movie.findByIdAndUpdate({'_id': id}, {'title': title, 'genre': genre, 'plot': plot})
+        .then(()=> res.redirect('/movies'))
+        .catch(err => {
+            console.log('Error updating movie: ', err);
+            next(err);
+        })
+})
+
 
 /* Delete movie */
 

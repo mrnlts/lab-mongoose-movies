@@ -1,0 +1,14 @@
+<h2>🗒️ Edit your movie 🗒️</h2>
+<form action="/movies/{{movieFromDB.id}}" method="post">
+    <label for="title">Title: </label>
+    <input id="title" type="text" name="title" value="{{this.movieFromDB.title}}">
+    <br>
+    <label for="genre">Genre: </label>
+    <input id="genre" type="text" name="genre" value="{{this.movieFromDB.genre}}">
+    <br>
+    <label for="plot">Plot: </label>
+    <input id="plot" type="text" name="plot" value="{{this.movieFromDB.plot}}">
+    <br>
+    <br>
+    <button type="submit">Save changes 💾</button>
+</form>
