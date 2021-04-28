@@ -1,4 +1,11 @@
 <h2>🔎 Knowing your celebrity in detail 🔎</h2>
-<h3>{{celebFromDB.name}}</h3>
-<h4>Occupation: {{celebFromDB.occupation}}</h4>
-<h4>Catchphrase: "{{celebFromDB.catchPhrase}}"</h4>
+<h3>{{name}}</h3>
+<h4>Occupation: {{occupation}}</h4>
+<h4>Catchphrase: "{{catchPhrase}}"</h4>
+<h4>Starring in: </h4>
+
+<ul>
+    {{#each movies}}
+        <li>{{this.title}}</li>
+    {{/each}}
+</ul>

@@ -2,6 +2,8 @@ const express = require('express');
 
 const Celebrity = require('../models/Celebrity.model.js');
 
+const Movie = require('../models/Movie.model.js');
+
 const router = express.Router();
 
 /* List all celebrities */
@@ -20,12 +22,16 @@ router.get('/celebrities', (req, res, next) => {
 
 router.get('/celebrities/new', (req, res, next) => {
     console.log('Enter new celebrity');
-    res.render('celebrities/new');
+    Movie.find()
+    .then(movies => {
+        res.render('celebrities/new', {movies});
+    })
 })
 
 router.post('/celebrities', (req, res, next) => {
-    const { name, occupation, catchPhrase } = req.body;
-    Celebrity.create({name, occupation, catchPhrase})
+    const { name, occupation, catchPhrase, movies } = req.body;
+
+    Celebrity.create({name, occupation, catchPhrase, movies})
         .then((newCeleb) => {
             newCeleb.save();
             res.redirect('/celebrities');
@@ -40,8 +46,12 @@ router.post('/celebrities', (req, res, next) => {
 
 router.get('/celebrities/:id', (req, res, next) => {
     const {id} = req.params;
+    
     Celebrity.findOne({'_id': id})
-        .then((celebFromDB)=> res.render('celebrities/show', {celebFromDB}))
+        .populate('movies')
+        .then((celebFromDB) => {
+            res.render('celebrities/show', celebFromDB)
+        })
         .catch(err => {
             console.log('Error displaying details of celebrity: ', err);
             next(err);
@@ -53,7 +63,9 @@ router.get('/celebrities/:id', (req, res, next) => {
 router.get('/celebrities/:id/edit', (req, res, next) => {
     const {id} = req.params;
     Celebrity.findOne({'_id': id})
-        .then((celebFromDB)=> res.render('celebrities/edit', {celebFromDB}))
+        .then(celebFromDB => {const celeb = celebFromDB; return celeb})
+        .then(celeb => Movie.find()
+            .then((moviesFromDB) => res.render('celebrities/edit', {celeb, moviesFromDB})))
         .catch(err => {
             console.log('Error opening edit page: ', err);
             next(err);
@@ -62,9 +74,12 @@ router.get('/celebrities/:id/edit', (req, res, next) => {
 
 router.post('/celebrities/:id', (req, res, next) => {
     const {id} = req.params;
-    const {name, occupation, catchPhrase} = req.body;
-    Celebrity.findByIdAndUpdate({'_id': id}, {'name':name, 'occupation':occupation, 'catchPhrase': catchPhrase})
-        .then(()=> res.redirect('/celebrities'))
+    const {name, occupation, catchPhrase, movies} = req.body;
+    Movie.findByIdAndUpdate(movies, { $push: {cast: id}})
+        .then(()=> {
+            Celebrity.findByIdAndUpdate({'_id': id}, {name, occupation, catchPhrase, movies})
+            res.redirect('/celebrities')
+        })
         .catch(err => {
             console.log('Error updating celebrity: ', err);
             next(err);

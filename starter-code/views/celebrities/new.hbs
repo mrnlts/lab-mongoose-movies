@@ -9,6 +9,17 @@
     <label for="catchPhrase">Catchphrase: </label>
     <input id="catchPhrase" type="text" name="catchPhrase">
     <br>
+    <label for="movie-select">Appears in: 
+        <select name="movies">
+      <option disable selected value=""></option>
+    
+      {{#each movies}}
+        <option value="{{this._id}}"> {{this.title}} </option>
+      {{/each}}
+    </select>
+    </label>
+    
+    <br>
     <br>
     <button type="submit">Save new celebrity 💾</button>
 </form>

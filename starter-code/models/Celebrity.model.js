@@ -9,7 +9,7 @@ const celebritySchema = new Schema({
         type: String,
         required: true
     },
-    movies: [String]
+    movies: [{ type: Schema.Types.ObjectId, ref: "Movie" }]
 });
 
 const Celebrity = model('Celebrity', celebritySchema);

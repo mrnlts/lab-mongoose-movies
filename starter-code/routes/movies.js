@@ -42,7 +42,11 @@ router.post('/movies', (req, res, next) => {
 router.get('/movies/:id', (req, res, next) => {
     const {id} = req.params;
     Movie.findOne({'_id': id})
-        .then((movieFromDB)=> res.render('movies/show', {movieFromDB}))
+        .populate('cast')
+        .then((movieFromDB)=> {
+            console.log(movieFromDB);
+            res.render('movies/show', {movieFromDB})
+        })
         .catch(err => {
             console.log('Error displaying details of movie: ', err);
             next(err);
